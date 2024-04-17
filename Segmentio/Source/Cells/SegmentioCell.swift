@@ -11,7 +11,7 @@ import UIKit
 class SegmentioCell: UICollectionViewCell {
     
     let padding: CGFloat = 8
-    static let segmentTitleLabelHeight: CGFloat = 22
+    static let segmentTitleLabelHeight: CGFloat = 15
     
     var verticalSeparatorView: UIView?
     var segmentTitleLabel: UILabel?
@@ -19,6 +19,8 @@ class SegmentioCell: UICollectionViewCell {
     var containerView: UIView?
     var imageContainerView: UIView?
     
+    var segmentImageViewVerticalConstraint : [NSLayoutConstraint]?
+    var contentViewHorizontalConstraints: [NSLayoutConstraint]?
     var topConstraint: NSLayoutConstraint?
     var bottomConstraint: NSLayoutConstraint?
     var cellSelected = false
@@ -143,8 +145,34 @@ class SegmentioCell: UICollectionViewCell {
             segmentTitleLabel?.font = selected ? selectedState.titleFont : defaultState.titleFont
             segmentTitleLabel?.alpha = selected ? selectedState.titleAlpha : defaultState.titleAlpha
             segmentTitleLabel?.minimumScaleFactor = 0.5
-            segmentTitleLabel?.adjustsFontSizeToFitWidth = true
+            segmentTitleLabel?.adjustsFontSizeToFitWidth = false
         }
+        
+        // main constraints
+        let metrics = ["labelHeight": SegmentioCell.segmentTitleLabelHeight]
+        let views = [
+            "imageContainerView": imageContainerView,
+            "containerView": containerView
+        ]
+        if let segmentImageViewVerticalConstraint = segmentImageViewVerticalConstraint {
+            NSLayoutConstraint.deactivate(segmentImageViewVerticalConstraint)
+        }
+        segmentImageViewVerticalConstraint = NSLayoutConstraint.constraints(
+            withVisualFormat: "V:[imageContainerView(labelHeight)]",
+            options: [.alignAllCenterY],
+            metrics: metrics,
+            views: views as [String : Any])
+        NSLayoutConstraint.activate(segmentImageViewVerticalConstraint!)
+        
+        if let contentViewHorizontalConstraints = contentViewHorizontalConstraints {
+            NSLayoutConstraint.deactivate(contentViewHorizontalConstraints)
+        }
+        contentViewHorizontalConstraints = NSLayoutConstraint.constraints(
+            withVisualFormat: selected ? "|[imageContainerView(labelHeight)][containerView]|" : "|[containerView]|",
+            options: [.alignAllCenterY],
+            metrics: metrics,
+            views: views as [String : Any])
+        NSLayoutConstraint.activate(contentViewHorizontalConstraints!)
                 
         if (style != .onlyLabel) {
             segmentImageView?.image = selected ? selectedImage : image
@@ -201,7 +229,7 @@ class SegmentioCell: UICollectionViewCell {
             attribute: .trailing,
             relatedBy: .equal,
             toItem: containerView,
-            attribute: .trailingMargin,
+            attribute: .trailing,
             multiplier: 1.0,
             constant: 0
         )
@@ -210,7 +238,7 @@ class SegmentioCell: UICollectionViewCell {
             attribute: .leading,
             relatedBy: .equal,
             toItem: containerView,
-            attribute: .leadingMargin,
+            attribute: .leading,
             multiplier: 1.0,
             constant: 0
         )
@@ -296,7 +324,7 @@ class SegmentioCell: UICollectionViewCell {
             segmentTitleLabel?.font = defaultState.titleFont
             segmentTitleLabel?.text = content.title
             segmentTitleLabel?.minimumScaleFactor = 0.5
-            segmentTitleLabel?.adjustsFontSizeToFitWidth = true
+            segmentTitleLabel?.adjustsFontSizeToFitWidth = false
         }
     }
     

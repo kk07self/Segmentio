@@ -23,6 +23,19 @@ public struct SegmentioItem {
         label.sizeToFit()
         return label.intrinsicContentSize.width
     }
+    
+    public func intrinsicWidth(_ states: SegmentioStates) -> CGFloat {
+        let label = UILabel()
+        label.text = self.title
+        label.font = states.defaultState.titleFont
+        label.sizeToFit()
+        var width = label.intrinsicContentSize.width
+        label.font = states.selectedState.titleFont
+        width = max(width, label.intrinsicContentSize.width)
+        label.font = states.highlightedState.titleFont
+        width = max(width, label.intrinsicContentSize.width)
+        return width
+    }
 
     public init(title: String?, image: UIImage?, selectedImage: UIImage? = nil) {
         self.title = title
@@ -173,10 +186,10 @@ public enum SegmentioStyle: String {
     }
 
     public var layoutMargins: CGFloat {
-        let defaultLayoutMargins: CGFloat = 8.0
+        let defaultLayoutMargins: CGFloat = 4.0
         switch self {
         case .onlyLabel, .imageAfterLabel, .imageBeforeLabel, .imageOverLabel, .imageUnderLabel:
-            return 4 * defaultLayoutMargins
+            return 2 * defaultLayoutMargins
         case .onlyImage:
             return 2 * defaultLayoutMargins
         }

@@ -100,7 +100,7 @@ open class Segmentio: UIView {
         collectionView.isScrollEnabled = segmentioOptions.scrollEnabled
         collectionView.backgroundColor = .clear
         collectionView.accessibilityIdentifier = "segmentio_collection_view"
-        
+        collectionView.contentInset = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 0)
         segmentioCollectionView = collectionView
         
         if let segmentioCollectionView = segmentioCollectionView {
@@ -426,7 +426,7 @@ open class Segmentio: UIView {
         var centerRect = item.cellFrameInSuperview
         
         if (item.startX + collectionView.contentOffset.x) - (item.collectionViewWidth - centerRect.width) / 2 < 0 {
-            centerRect.origin.x = 0
+            centerRect.origin.x = -16
             let widthToAdd = item.collectionViewWidth - centerRect.width
             centerRect.size.width += widthToAdd
         } else if collectionView.contentSize.width - item.endX < (item.collectionViewWidth - centerRect.width) / 2 {
@@ -530,9 +530,9 @@ open class Segmentio: UIView {
             
             var dynamicWidth: CGFloat = 0
             for item in segmentioItems {
-                dynamicWidth += Segmentio.intrinsicWidth(for: item, style: segmentioStyle)
+                dynamicWidth += Segmentio.intrinsicWidth(for: item, style: segmentioStyle, states: segmentioOptions.states)
             }
-            let itemWidth = Segmentio.intrinsicWidth(for: segmentioItems[indexPath.row], style: segmentioStyle)
+            let itemWidth = Segmentio.intrinsicWidth(for: segmentioItems[indexPath.row], style: segmentioStyle, states: segmentioOptions.states)
             width = dynamicWidth > collectionViewWidth ? itemWidth
                 : itemWidth + ((collectionViewWidth - dynamicWidth) / CGFloat(segmentioItems.count))
         }
@@ -540,8 +540,8 @@ open class Segmentio: UIView {
         return width
     }
 
-    private static func intrinsicWidth(for item: SegmentioItem, style: SegmentioStyle) -> CGFloat {
-        var itemWidth = style.isWithText() ? item.intrinsicWidth : (item.image?.size.width ?? 0)
+    private static func intrinsicWidth(for item: SegmentioItem, style: SegmentioStyle, states: SegmentioStates) -> CGFloat {
+        var itemWidth = style.isWithText() ? item.intrinsicWidth(states) : (item.image?.size.width ?? 0)
         itemWidth += style.layoutMargins
         
         if style == .imageAfterLabel || style == .imageBeforeLabel {

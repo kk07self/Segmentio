@@ -11,7 +11,7 @@ Pod::Spec.new do |spec|
   spec.license = { :type => "MIT", :file => "LICENSE" }
   spec.social_media_url = "https://twitter.com/yalantis"
 
-  spec.ios.deployment_target = '8.0'
+  spec.ios.deployment_target = '13.0'
   spec.source       = { :git => "https://github.com/Yalantis/Segmentio.git", :tag => spec.version }
 
   spec.source_files = 'Segmentio/Source/**/*.swift'

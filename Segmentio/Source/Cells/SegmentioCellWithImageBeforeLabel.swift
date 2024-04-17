@@ -26,20 +26,25 @@ class SegmentioCellWithImageBeforeLabel: SegmentioCell {
         ]
         
         // main constraints
-        
-        let segmentImageViewVerticalConstraint = NSLayoutConstraint.constraints(
+        if let segmentImageViewVerticalConstraint = segmentImageViewVerticalConstraint {
+            NSLayoutConstraint.deactivate(segmentImageViewVerticalConstraint)
+        }
+        segmentImageViewVerticalConstraint = NSLayoutConstraint.constraints(
             withVisualFormat: "V:[imageContainerView(labelHeight)]",
             options: [.alignAllCenterY],
             metrics: metrics,
             views: views)
-        NSLayoutConstraint.activate(segmentImageViewVerticalConstraint)
+        NSLayoutConstraint.activate(segmentImageViewVerticalConstraint!)
         
-        let contentViewHorizontalConstraints = NSLayoutConstraint.constraints(
-            withVisualFormat: "|-[imageContainerView(labelHeight)]-[containerView]-|",
+        if let contentViewHorizontalConstraints = contentViewHorizontalConstraints {
+            NSLayoutConstraint.deactivate(contentViewHorizontalConstraints)
+        }
+        contentViewHorizontalConstraints = NSLayoutConstraint.constraints(
+            withVisualFormat: "|[imageContainerView(labelHeight)][containerView]|",
             options: [.alignAllCenterY],
             metrics: metrics,
             views: views)
-        NSLayoutConstraint.activate(contentViewHorizontalConstraints)
+        NSLayoutConstraint.activate(contentViewHorizontalConstraints!)
         
         // custom constraints
         
