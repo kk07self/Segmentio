@@ -100,7 +100,7 @@ open class Segmentio: UIView {
         collectionView.isScrollEnabled = segmentioOptions.scrollEnabled
         collectionView.backgroundColor = .clear
         collectionView.accessibilityIdentifier = "segmentio_collection_view"
-        collectionView.contentInset = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 0)
+        collectionView.contentInset = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
         segmentioCollectionView = collectionView
         
         if let segmentioCollectionView = segmentioCollectionView {
@@ -426,7 +426,7 @@ open class Segmentio: UIView {
         var centerRect = item.cellFrameInSuperview
         
         if (item.startX + collectionView.contentOffset.x) - (item.collectionViewWidth - centerRect.width) / 2 < 0 {
-            centerRect.origin.x = -16
+            centerRect.origin.x = -32
             let widthToAdd = item.collectionViewWidth - centerRect.width
             centerRect.size.width += widthToAdd
         } else if collectionView.contentSize.width - item.endX < (item.collectionViewWidth - centerRect.width) / 2 {
