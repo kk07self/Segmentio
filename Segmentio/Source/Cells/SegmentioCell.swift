@@ -168,7 +168,7 @@ class SegmentioCell: UICollectionViewCell {
             NSLayoutConstraint.deactivate(contentViewHorizontalConstraints)
         }
         contentViewHorizontalConstraints = NSLayoutConstraint.constraints(
-            withVisualFormat: selected ? "|[imageContainerView(labelHeight)][containerView]|" : "|[containerView]|",
+            withVisualFormat: selected ? "|[containerView]|" : "|[containerView]|",
             options: [.alignAllCenterY],
             metrics: metrics,
             views: views as [String : Any])
@@ -217,10 +217,10 @@ class SegmentioCell: UICollectionViewCell {
         
         let segmentTitleLabelVerticalCenterConstraint = NSLayoutConstraint(
             item: segmentTitleLabel,
-            attribute: .centerY,
+            attribute: .bottom,
             relatedBy: .equal,
             toItem: containerView,
-            attribute: .centerY,
+            attribute: .bottom,
             multiplier: 1,
             constant: 0
         )
